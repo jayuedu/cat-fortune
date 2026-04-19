@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feline Inspiration Covenant</title>
+    <style>
+      :root {
+        --bg-1: #d8ccbc;
+        --bg-2: #e9e0d3;
+        --paper: #f5efe5;
+        --paper-deep: #efe5d7;
+        --ink: #4a3422;
+        --muted: #7a6552;
+        --line: rgba(128, 109, 86, 0.16);
+        --primary: #7f5a38;
+        --primary-deep: #5a3e25;
+        --shadow: 0 22px 45px rgba(74, 52, 34, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", "Avenir Next", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(rgba(120, 101, 78, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(120, 101, 78, 0.08) 1px, transparent 1px),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2));
+        background-size: 38px 38px, 38px 38px, auto;
+        overflow-x: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: auto;
+        background: #b79072;
+        z-index: 0;
+        opacity: 0.52;
+      }
+
+      body::before {
+        top: 38px;
+        left: 0;
+        width: 180px;
+        height: 110px;
+        clip-path: polygon(0 0, 100% 0, 78% 100%, 0 70%);
+      }
+
+      body::after {
+        right: 180px;
+        bottom: 26px;
+        width: 150px;
+        height: 92px;
+        clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 76%);
+      }
+
+      .page {
+        position: relative;
+        z-index: 1;
+        width: min(860px, calc(100vw - 38px));
+        margin: 0 auto;
+        padding: 48px 0;
+      }
+
+      .hero {
+        background: var(--paper);
+        border: 1px solid rgba(154, 130, 103, 0.18);
+        border-radius: 0;
+        box-shadow: var(--shadow);
+        padding: 46px 42px 40px;
+        position: relative;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 14px;
+        border: 1px solid var(--line);
+        pointer-events: none;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        align-items: center;
+        justify-items: center;
+      }
+
+      .hero-copy {
+        width: min(100%, 500px);
+        display: grid;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--muted);
+        font-size: 0.85rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0 auto;
+        font-size: clamp(2.2rem, 5.6vw, 3.7rem);
+        line-height: 1.08;
+        letter-spacing: 0.02em;
+        max-width: 460px;
+        text-align: center;
+      }
+
+      .subtitle {
+        display: none;
+      }
+
+      .hero-actions {
+        display: grid;
+        justify-items: center;
+        margin-top: 14px;
+      }
+
+      .box-wrap {
+        display: grid;
+        justify-items: center;
+        gap: 14px;
+        padding: 0;
+        background: transparent;
+        border: 0;
+      }
+
+      .magic-box {
+        width: min(286px, 60vw);
+        filter: drop-shadow(0 14px 18px rgba(74, 52, 34, 0.12));
+        animation: boxFloat 4.2s ease-in-out infinite;
+      }
+
+      @keyframes boxFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      .hint {
+        margin: 24px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+        text-align: center;
+        max-width: 430px;
+      }
+
+      .open-btn,
+      .close-btn {
+        border: 0;
+        cursor: pointer;
+        font: inherit;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      }
+
+      .open-btn {
+        padding: 13px 30px;
+        border-radius: 999px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+        box-shadow: 0 14px 24px rgba(90, 62, 37, 0.2);
+        font-size: 0.96rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+
+      .open-btn:hover,
+      .close-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .open-btn:active,
+      .close-btn:active {
+        transform: translateY(0);
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        background: rgba(74, 52, 34, 0.28);
+        backdrop-filter: blur(8px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.28s ease;
+        z-index: 10;
+      }
+
+      .modal.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .contract-card {
+        width: min(94vw, 760px);
+        padding: 28px 28px 24px;
+        border-radius: 8px;
+        background:
+          linear-gradient(180deg, rgba(249, 244, 236, 0.98), rgba(243, 235, 223, 0.96)),
+          #fff;
+        box-shadow: 0 24px 60px rgba(74, 52, 34, 0.2);
+        text-align: left;
+        transform: translateY(24px) scale(0.96);
+        transition: transform 0.32s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(154, 130, 103, 0.24);
+      }
+
+      .modal.show .contract-card {
+        transform: translateY(0) scale(1);
+      }
+
+      .contract-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 112px;
+        background:
+          linear-gradient(135deg, rgba(211, 184, 126, 0.22), rgba(245, 239, 229, 0.16)),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.18) 0,
+            rgba(255, 255, 255, 0.18) 14px,
+            transparent 14px,
+            transparent 28px
+          );
+        border-radius: 0 0 40px 40px;
+      }
+
+      .contract-card::after {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border: 1px solid rgba(171, 143, 91, 0.18);
+        border-radius: 22px;
+        pointer-events: none;
+      }
+
+      .badge {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: rgba(255, 252, 244, 0.9);
+        border: 1px solid rgba(201, 176, 124, 0.26);
+        box-shadow: 0 10px 24px rgba(131, 96, 146, 0.1);
+        font-size: 0.83rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .plate-top {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 16px 0 22px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(171, 143, 91, 0.2);
+      }
+
+      .plate-kicker,
+      .plate-code,
+      .meta-eyebrow,
+      .plate-section,
+      .art-caption {
+        position: relative;
+        margin: 0;
+        color: rgba(93, 76, 51, 0.74);
+        letter-spacing: 0.08em;
+      }
+
+      .plate-kicker,
+      .meta-eyebrow {
+        font-size: 0.82rem;
+        text-transform: uppercase;
+      }
+
+      .plate-code {
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .label-grid {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(190px, 230px) minmax(0, 1fr);
+        gap: 24px;
+        align-items: center;
+      }
+
+      .label-artwork {
+        position: relative;
+        padding: 14px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(171, 143, 91, 0.16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+        align-self: center;
+        margin-top: 16px;
+      }
+
+      .cat-photo {
+        position: relative;
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        margin: 0 auto;
+        border-radius: 20px;
+        object-fit: cover;
+        background: #fff4ef;
+        box-shadow: 0 16px 34px rgba(110, 80, 126, 0.14);
+      }
+
+      .label-copy {
+        position: relative;
+        padding-top: 4px;
+      }
+
+      .cat-name {
+        position: relative;
+        margin: 10px 0 12px;
+        font-size: clamp(1.6rem, 3vw, 2.1rem);
+        line-height: 1.2;
+      }
+
+      .meta-row {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .cat-trait {
+        position: relative;
+        display: inline-flex;
+        margin: 0;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(170, 127, 70, 0.1);
+        color: #8d6232;
+        font-size: 0.92rem;
+        letter-spacing: 0.05em;
+      }
+
+      .plate-section {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(93, 76, 51, 0.06);
+        font-size: 0.9rem;
+      }
+
+      .fortune {
+        position: relative;
+        margin: 0 0 22px;
+        max-width: none;
+        padding: 16px 18px;
+        border-left: 4px solid rgba(176, 141, 71, 0.55);
+        background: rgba(255, 255, 255, 0.56);
+        border-radius: 0 18px 18px 0;
+        line-height: 1.9;
+        color: rgba(82, 59, 96, 0.84);
+      }
+
+      .close-btn {
+        position: relative;
+        padding: 12px 24px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #fff9ef, #fff2d6);
+        color: #9a6d1f;
+        font-weight: 700;
+        box-shadow: 0 12px 24px rgba(176, 141, 71, 0.16);
+        border: 1px solid rgba(201, 176, 124, 0.25);
+      }
+
+      @media (max-width: 560px) {
+        .page {
+          width: calc(100vw - 20px);
+          padding: 18px 0 24px;
+        }
+
+        .hero {
+          padding: 28px 16px 24px;
+        }
+
+        .subtitle {
+          font-size: 0.96rem;
+        }
+
+        .contract-card {
+          padding: 22px 18px 20px;
+        }
+
+        .plate-top {
+          display: grid;
+          gap: 8px;
+        }
+
+        .label-grid {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        .label-artwork {
+          max-width: 320px;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Special Exhibition · Interactive Fortune Device</p>
+            <h1>The Museum of Feline Inspiration</h1>
+            <p class="hint">
+              Press the ceremonial box to reveal the label chosen for you today.
+            </p>
+          </div>
+
+          <div class="box-wrap">
+            <img
+              class="magic-box"
+              alt="Decorative ceremonial box"
+              src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 260'%3E%3Cdefs%3E%3ClinearGradient id='paper' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f2e8da'/%3E%3Cstop offset='100%25' stop-color='%23ddccb6'/%3E%3C/linearGradient%3E%3ClinearGradient id='lid' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23fbf6ee'/%3E%3Cstop offset='100%25' stop-color='%23e6d5bf'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cellipse cx='160' cy='219' rx='86' ry='18' fill='%23957c61' opacity='.14'/%3E%3Cpath d='M86 103h148l-16 25H102z' fill='%23efe4d3' stroke='%235a3e25' stroke-width='2.4'/%3E%3Crect x='66' y='122' width='188' height='96' rx='14' fill='url(%23paper)' stroke='%235a3e25' stroke-width='3'/%3E%3Crect x='87' y='90' width='146' height='26' rx='10' fill='url(%23lid)' stroke='%235a3e25' stroke-width='3'/%3E%3Cpath d='M100 90c13-17 31-27 60-29M160 61c26 1 45 11 58 29' fill='none' stroke='%235a3e25' stroke-width='3' stroke-linecap='round'/%3E%3Crect x='152' y='92' width='16' height='126' rx='7' fill='%23e9dac8' stroke='%235a3e25' stroke-width='2.4'/%3E%3Crect x='117' y='144' width='86' height='34' rx='10' fill='%23f7f2ea' stroke='%235a3e25' stroke-width='2.2'/%3E%3Cpath d='M136 160c6-7 12-10 24-10s18 3 24 10' fill='none' stroke='%235a3e25' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='149' cy='159' r='3' fill='%235a3e25'/%3E%3Ccircle cx='171' cy='159' r='3' fill='%235a3e25'/%3E%3Cpath d='M149 173c6 5 15 5 22 0' fill='none' stroke='%235a3e25' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M105 122h110M105 132h110' stroke='%235a3e25' stroke-opacity='.18' stroke-width='2'/%3E%3C/svg%3E"
+            />
+            <button class="open-btn" id="openButton" type="button">Open the Draw</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal" id="contractModal" aria-hidden="true">
+      <section class="contract-card" role="dialog" aria-modal="true" aria-labelledby="catName">
+        <div class="badge">Museum Label</div>
+        <div class="plate-top">
+          <p class="plate-kicker">Feline Inspiration Covenant · Special Exhibition</p>
+          <p class="plate-code" id="catCode">Accession No. MC-000</p>
+        </div>
+        <div class="label-grid">
+          <div class="label-artwork">
+            <img class="cat-photo" id="catImage" alt="Random cat exhibit" />
+          </div>
+          <div class="label-copy">
+            <p class="meta-eyebrow" id="catSeries">Collection division pending</p>
+            <h2 class="cat-name" id="catName">Awaiting activation</h2>
+            <div class="meta-row">
+              <div class="cat-trait" id="catTrait">Trait pending</div>
+              <div class="plate-section" id="catSection">Gallery pending</div>
+            </div>
+            <p class="fortune" id="catFortune">
+              Each draw reveals a new cat exhibit and a fresh line of fortune.
+            </p>
+          </div>
+        </div>
+        <button class="close-btn" id="closeButton" type="button">Archive This Blessing</button>
+      </section>
+    </div>
+
+    <script>
+      function svgToDataUri(svg) {
+        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+      }
+
+      function getMotifSvg(motif, accent, deepAccent) {
+        const motifs = {
+          sun: `<circle cx="173" cy="57" r="22" fill="${accent}" opacity="0.55" />
+            <path d="M173 24v16M173 74v16M140 57h16M190 57h16M149 33l11 11M186 70l11 11M149 81l11-11M186 44l11-11" stroke="${deepAccent}" stroke-width="4" stroke-linecap="round" opacity="0.45" />`,
+          reeds: `<path d="M38 182c18-12 26-30 25-58M56 184c14-16 22-36 20-69M74 186c10-12 18-32 17-58" stroke="${deepAccent}" stroke-width="5" stroke-linecap="round" opacity="0.4" />
+            <path d="M36 133c12-1 20-7 25-18M54 118c13-2 18-8 22-18M72 129c13-1 20-9 23-21" stroke="${accent}" stroke-width="4" stroke-linecap="round" opacity="0.6" />`,
+          mosaic: `<rect x="28" y="28" width="164" height="164" rx="30" fill="none" stroke="${deepAccent}" stroke-dasharray="12 8" stroke-width="6" opacity="0.28" />
+            <path d="M47 54h42M131 54h42M47 166h42M131 166h42M54 47v42M166 47v42M54 131v42M166 131v42" stroke="${accent}" stroke-width="4" opacity="0.32" />`,
+          flower: `<circle cx="58" cy="58" r="12" fill="${accent}" opacity="0.7" />
+            <circle cx="46" cy="58" r="10" fill="${deepAccent}" opacity="0.45" />
+            <circle cx="70" cy="58" r="10" fill="${deepAccent}" opacity="0.45" />
+            <circle cx="58" cy="46" r="10" fill="${deepAccent}" opacity="0.45" />
+            <circle cx="58" cy="70" r="10" fill="${deepAccent}" opacity="0.45" />
+            <path d="M58 82c0 24-8 40-18 54" stroke="${deepAccent}" stroke-width="4" stroke-linecap="round" opacity="0.45" />`,
+          window: `<rect x="36" y="32" width="56" height="88" rx="12" fill="none" stroke="${deepAccent}" stroke-width="5" opacity="0.32" />
+            <path d="M64 32v88M36 76h56" stroke="${accent}" stroke-width="4" opacity="0.32" />
+            <path d="M126 160c18-4 34-16 46-31" stroke="${deepAccent}" stroke-width="5" stroke-linecap="round" opacity="0.35" />`,
+          shadow: `<path d="M26 170c40-36 82-58 168-68" stroke="${deepAccent}" stroke-width="18" stroke-linecap="round" opacity="0.12" />
+            <circle cx="166" cy="54" r="12" fill="${accent}" opacity="0.22" />`,
+          tablecloth: `<path d="M28 55h164" stroke="${deepAccent}" stroke-width="7" opacity="0.28" />
+            <path d="M28 55 52 78 76 55 100 78 124 55 148 78 172 55 192 78" fill="none" stroke="${accent}" stroke-width="5" opacity="0.45" />`,
+          home: `<path d="M52 92 110 46l58 46v60H52z" fill="none" stroke="${deepAccent}" stroke-width="5" opacity="0.28" />
+            <path d="M96 152v-30h28v30" fill="none" stroke="${accent}" stroke-width="5" opacity="0.35" />`,
+          moon: `<path d="M165 40c-18 6-28 24-24 42 3 16 17 29 34 31-8 6-19 9-30 7-26-4-43-28-39-53 4-26 27-44 54-40 2 0 3 1 5 1z" fill="${accent}" opacity="0.48" />`,
+          yarn: `<circle cx="160" cy="62" r="22" fill="none" stroke="${accent}" stroke-width="5" opacity="0.45" />
+            <path d="M144 54c8-6 24-4 30 8M140 66c10-4 28-2 37 11M145 79c9-4 21-3 29 4M127 92c8-5 18-9 27-11" fill="none" stroke="${deepAccent}" stroke-width="4" stroke-linecap="round" opacity="0.45" />`,
+          sketch: `<path d="M40 60c24-20 48-29 74-30M46 154c32 17 80 24 130 10M34 112c23-8 44-10 72-7" fill="none" stroke="${deepAccent}" stroke-width="4" stroke-linecap="round" opacity="0.36" />`,
+          cube: `<path d="M56 58 104 36l58 26-48 23zM56 58v54l48 26V85M162 62v50l-58 26" fill="none" stroke="${deepAccent}" stroke-width="5" opacity="0.28" />`,
+          fish: `<ellipse cx="162" cy="62" rx="22" ry="12" fill="${accent}" opacity="0.5" />
+            <path d="M182 62 198 50v24z" fill="${deepAccent}" opacity="0.55" />
+            <circle cx="154" cy="60" r="3" fill="${deepAccent}" opacity="0.7" />`,
+          lamp: `<path d="M156 38h18l-7 26h-4z" fill="${accent}" opacity="0.58" />
+            <path d="M145 64h40l-16 28h-8z" fill="${deepAccent}" opacity="0.18" />
+            <circle cx="165" cy="96" r="10" fill="${accent}" opacity="0.38" />`,
+          surreal: `<path d="M42 60c16-18 38-26 64-25 28 1 46 14 67 13 14 0 24-4 35-11-3 22-20 42-52 46-24 3-38 12-49 27-11-13-22-20-40-24-17-4-29-12-39-26 5 1 9 1 14 0z" fill="${accent}" opacity="0.24" />`,
+          thorn: `<path d="M43 168c23-17 44-49 52-92 19 28 42 52 80 70-38 6-63 16-89 42-10-8-25-16-43-20z" fill="none" stroke="${deepAccent}" stroke-width="5" opacity="0.28" />
+            <path d="M85 125l-10 12M100 104l-11 12M118 118l-10 13M136 133l-10 13" stroke="${accent}" stroke-width="4" stroke-linecap="round" opacity="0.45" />`,
+          pop: `<rect x="28" y="28" width="70" height="70" rx="16" fill="${accent}" opacity="0.55" />
+            <rect x="122" y="28" width="70" height="70" rx="16" fill="${deepAccent}" opacity="0.4" />
+            <rect x="28" y="122" width="70" height="70" rx="16" fill="${deepAccent}" opacity="0.25" />
+            <rect x="122" y="122" width="70" height="70" rx="16" fill="${accent}" opacity="0.3" />`,
+          paris: `<path d="M160 38 144 118h12l4-22h20l4 22h12l-16-80h-20zm4 46 6-30 6 30h-12z" fill="${deepAccent}" opacity="0.3" />
+            <path d="M36 166c18-2 34-11 52-28" stroke="${accent}" stroke-width="5" stroke-linecap="round" opacity="0.42" />`,
+          ink: `<path d="M44 58c28 18 54 23 86 18 16-2 30-7 46-16" fill="none" stroke="${deepAccent}" stroke-width="8" stroke-linecap="round" opacity="0.22" />
+            <circle cx="56" cy="156" r="14" fill="${accent}" opacity="0.26" />
+            <circle cx="168" cy="148" r="10" fill="${deepAccent}" opacity="0.18" />`,
+          atom: `<circle cx="162" cy="58" r="8" fill="${accent}" opacity="0.72" />
+            <ellipse cx="162" cy="58" rx="34" ry="14" fill="none" stroke="${deepAccent}" stroke-width="4" opacity="0.4" />
+            <ellipse cx="162" cy="58" rx="34" ry="14" fill="none" stroke="${deepAccent}" stroke-width="4" opacity="0.4" transform="rotate(60 162 58)" />
+            <ellipse cx="162" cy="58" rx="34" ry="14" fill="none" stroke="${deepAccent}" stroke-width="4" opacity="0.4" transform="rotate(-60 162 58)" />`
+        };
+
+        return motifs[motif] || "";
+      }
+
+      function getEyeSvg(style, eyeColor) {
+        const eyes = {
+          round: `<circle cx="89" cy="117" r="6" fill="${eyeColor}" />
+            <circle cx="131" cy="117" r="6" fill="${eyeColor}" />`,
+          almond: `<path d="M79 117c5-7 15-7 20 0-5 7-15 7-20 0z" fill="${eyeColor}" />
+            <path d="M121 117c5-7 15-7 20 0-5 7-15 7-20 0z" fill="${eyeColor}" />`,
+          sleepy: `<path d="M81 118c4-4 12-4 16 0" fill="none" stroke="${eyeColor}" stroke-width="4.5" stroke-linecap="round" />
+            <path d="M123 118c4-4 12-4 16 0" fill="none" stroke="${eyeColor}" stroke-width="4.5" stroke-linecap="round" />`,
+          bright: `<circle cx="89" cy="117" r="7" fill="${eyeColor}" />
+            <circle cx="131" cy="117" r="7" fill="${eyeColor}" />
+            <circle cx="91" cy="115" r="1.5" fill="#fff" />
+            <circle cx="133" cy="115" r="1.5" fill="#fff" />`
+        };
+
+        return eyes[style] || eyes.round;
+      }
+
+      function getPatternSvg(pattern, markColor, accent) {
+        const patterns = {
+          blaze: `<path d="M110 84c8 12 10 22 6 34-3 8-7 12-6 20-6-8-10-14-9-22 1-11 4-20 9-32z" fill="${markColor}" opacity="0.32" />`,
+          stripes: `<path d="M93 90c-4 10-5 18-3 28M110 86c-2 13-2 23 0 35M126 91c3 10 4 18 3 27" fill="none" stroke="${markColor}" stroke-width="4" stroke-linecap="round" opacity="0.34" />`,
+          mask: `<path d="M72 105c16-10 31-14 38-14s22 4 38 14c-5 13-19 23-38 23s-33-10-38-23z" fill="${markColor}" opacity="0.22" />`,
+          patch: `<path d="M71 106c9-12 22-18 34-15 4 14 2 28-7 39-17-4-25-12-27-24z" fill="${markColor}" opacity="0.3" />`,
+          split: `<path d="M110 72v98" stroke="${markColor}" stroke-width="6" opacity="0.24" />
+            <path d="M110 78c20 4 35 15 41 34-5 17-20 30-41 38z" fill="${accent}" opacity="0.18" />`,
+          nosePatch: `<ellipse cx="110" cy="139" rx="18" ry="12" fill="${markColor}" opacity="0.22" />`,
+          spots: `<circle cx="90" cy="94" r="8" fill="${markColor}" opacity="0.28" />
+            <circle cx="126" cy="88" r="6" fill="${markColor}" opacity="0.24" />
+            <circle cx="138" cy="108" r="7" fill="${markColor}" opacity="0.25" />`,
+          sketch: `<path d="M78 100c10-6 20-8 32-8M82 131c10-5 20-6 28-4M118 95c12 2 24 8 30 16" fill="none" stroke="${markColor}" stroke-width="3.5" stroke-linecap="round" opacity="0.28" />`,
+          shadow: `<path d="M52 135c14-38 40-61 85-71-7 11-11 25-8 43 3 16 10 27 18 37-43-3-72-6-95-9z" fill="${markColor}" opacity="0.18" />`
+        };
+
+        return patterns[pattern] || "";
+      }
+
+      function getAccessorySvg(accessory, accent, deepAccent, accessoryColor) {
+        const tone = accessoryColor || accent;
+        const accessories = {
+          crown: `<path d="M76 73 92 50l18 22 18-22 16 23v10H76z" fill="${tone}" opacity="0.72" />
+            <circle cx="92" cy="49" r="4" fill="${deepAccent}" />
+            <circle cx="128" cy="49" r="4" fill="${deepAccent}" />`,
+          collar: `<path d="M74 156c14 10 33 15 56 15s42-5 56-15" fill="none" stroke="${tone}" stroke-width="9" stroke-linecap="round" opacity="0.7" />
+            <circle cx="110" cy="168" r="8" fill="${deepAccent}" opacity="0.82" />`,
+          ribbon: `<path d="M72 90c8-10 18-14 31-10-5 10-15 17-31 20 0-4 0-7 0-10zm76 0c-8-10-18-14-31-10 5 10 15 17 31 20 0-4 0-7 0-10z" fill="${tone}" opacity="0.64" />
+            <circle cx="110" cy="88" r="9" fill="${deepAccent}" opacity="0.64" />`,
+          bell: `<path d="M82 158c9 8 18 12 28 12s19-4 28-12" fill="none" stroke="${tone}" stroke-width="8" stroke-linecap="round" opacity="0.72" />
+            <circle cx="110" cy="166" r="9" fill="${tone}" opacity="0.85" />`,
+          lace: `<path d="M78 160c10 7 20 10 32 10s22-3 32-10" fill="none" stroke="${tone}" stroke-width="6" stroke-linecap="round" opacity="0.72" />
+            <path d="M82 161 88 168 94 161 100 168 106 161 112 168 118 161 124 168 130 161 136 168 142 161" fill="none" stroke="${deepAccent}" stroke-width="2.8" opacity="0.58" />`,
+          thorn: `<path d="M78 161c10 7 21 10 32 10s22-3 32-10" fill="none" stroke="${tone}" stroke-width="6" stroke-linecap="round" opacity="0.7" />
+            <path d="M90 158l-5 8M104 161l-5 8M118 161l5 8M130 158l5 8" stroke="${deepAccent}" stroke-width="3" stroke-linecap="round" />`,
+          shades: `<rect x="74" y="106" width="28" height="15" rx="5" fill="${tone}" opacity="0.82" />
+            <rect x="118" y="106" width="28" height="15" rx="5" fill="${deepAccent}" opacity="0.82" />
+            <path d="M102 113h16" stroke="${deepAccent}" stroke-width="4" stroke-linecap="round" />`,
+          wings: `<path d="M54 122c-10-11-14-22-13-35 18 6 31 20 41 43-11-1-20-4-28-8zm112 0c10-11 14-22 13-35-18 6-31 20-41 43 11-1 20-4 28-8z" fill="${tone}" opacity="0.34" />`,
+          ink: `<path d="M78 160c8 7 19 10 32 10s24-3 32-10" fill="none" stroke="${tone}" stroke-width="7" stroke-linecap="round" opacity="0.45" />`,
+          orbit: `<ellipse cx="110" cy="120" rx="64" ry="25" fill="none" stroke="${tone}" stroke-width="4" opacity="0.34" />
+            <ellipse cx="110" cy="120" rx="64" ry="25" fill="none" stroke="${deepAccent}" stroke-width="4" opacity="0.28" transform="rotate(60 110 120)" />`,
+          bowtie: `<path d="M82 160 64 150l2 18 18-6zm56 0 18-10-2 18-18-6z" fill="${tone}" opacity="0.72" />
+            <circle cx="110" cy="160" r="8" fill="${deepAccent}" opacity="0.84" />`,
+          halo: `<ellipse cx="110" cy="67" rx="42" ry="12" fill="none" stroke="${tone}" stroke-width="6" opacity="0.42" />`,
+          star: `<path d="m154 76 6 12 14 2-10 9 3 13-13-7-12 7 2-13-10-9 14-2z" fill="${tone}" opacity="0.68" />`
+        };
+
+        return accessories[accessory] || "";
+      }
+
+      function createCatImage({
+        background,
+        catColor,
+        accent,
+        deepAccent,
+        eyeColor,
+        motif,
+        faceWidth = 116,
+        faceHeight = 116,
+        earHeight = 40,
+        eyeStyle = "round",
+        pattern = "",
+        accessory = "",
+        markColor = deepAccent,
+        accessoryColor = accent
+      }) {
+        const faceTop = 122 - faceHeight / 2;
+        const faceLeft = 110 - faceWidth / 2;
+        const leftEar = `M${faceLeft + 12} 86 L${faceLeft + 34} ${86 - earHeight} L${faceLeft + 52} 86 Z`;
+        const rightEar = `M${faceLeft + faceWidth - 12} 86 L${faceLeft + faceWidth - 34} ${86 - earHeight} L${faceLeft + faceWidth - 52} 86 Z`;
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220">
+            <rect width="220" height="220" rx="34" fill="${background}" />
+            <path d="${leftEar}" fill="${catColor}" />
+            <path d="${rightEar}" fill="${catColor}" />
+            <path d="${leftEar}" fill="${accent}" opacity="0.42" transform="translate(5 6) scale(0.72)" />
+            <path d="${rightEar}" fill="${accent}" opacity="0.42" transform="translate(-5 6) scale(0.72)" />
+            <ellipse cx="110" cy="122" rx="${faceWidth / 2}" ry="${faceHeight / 2}" fill="${catColor}" />
+            <ellipse cx="110" cy="160" rx="52" ry="12" fill="${deepAccent}" opacity="0.12" />
+            ${getMotifSvg(motif, accent, deepAccent)}
+            ${getPatternSvg(pattern, markColor, accent)}
+            ${getAccessorySvg(accessory, accent, deepAccent, accessoryColor)}
+            ${getEyeSvg(eyeStyle, eyeColor)}
+            <ellipse cx="110" cy="138" rx="20" ry="14" fill="#fff" opacity="0.2" />
+            <path d="M103 136c4 4 10 4 14 0" fill="none" stroke="${deepAccent}" stroke-linecap="round" stroke-width="5" />
+            <path d="M95 147c10 8 20 8 30 0" fill="none" stroke="${eyeColor}" stroke-linecap="round" stroke-width="4.5" />
+            <path d="M72 108H46M72 118H44M148 108h26M148 118h30" stroke="${eyeColor}" stroke-linecap="round" stroke-width="3.5" opacity="0.65" />
+            <circle cx="76" cy="131" r="7" fill="${accent}" opacity="0.35" />
+            <circle cx="144" cy="131" r="7" fill="${accent}" opacity="0.35" />
+          </svg>
+        `;
+
+        return svgToDataUri(svg);
+      }
+
+      const catFortunes = [
+        {
+          name: "Ancient Egyptian Andersen Cat",
+          trait: "Sacred Majesty",
+          collection: "Core Exhibition",
+          section: "Nile Crown Gallery",
+          luckyWord: "You carry a glow that should not be violated. Remain regal, and never bow to what is beneath your worth.",
+          image: createCatImage({
+            background: "#f9efd5",
+            catColor: "#d9b26c",
+            accent: "#f4d27e",
+            deepAccent: "#9a6d1f",
+            eyeColor: "#5e4324",
+            motif: "sun",
+            faceWidth: 108,
+            faceHeight: 118,
+            earHeight: 46,
+            eyeStyle: "almond",
+            pattern: "blaze",
+            accessory: "crown"
+          })
+        },
+        {
+          name: "Marsh Hunter Cat of Ancient Egypt",
+          trait: "Precision and Drive",
+          collection: "Core Exhibition",
+          section: "Papyrus Marsh Wing",
+          luckyWord: "Your target is already ahead. Ignore the noise around you, choose your moment, and strike with clarity.",
+          image: createCatImage({
+            background: "#e8f3df",
+            catColor: "#b8c98d",
+            accent: "#dbe8a3",
+            deepAccent: "#648044",
+            eyeColor: "#495739",
+            motif: "reeds",
+            faceWidth: 112,
+            faceHeight: 108,
+            earHeight: 48,
+            eyeStyle: "bright",
+            pattern: "stripes"
+          })
+        },
+        {
+          name: "Pompeii Mosaic Sentinel",
+          trait: "Vigilance and Duty",
+          collection: "Core Exhibition",
+          section: "Mosaic Atrium Hall",
+          luckyWord: "Protect the small territory inside your heart. In a restless world, calm attention is its own force.",
+          image: createCatImage({
+            background: "#f8eadf",
+            catColor: "#d1a17d",
+            accent: "#f0c98d",
+            deepAccent: "#9b5f43",
+            eyeColor: "#5f463d",
+            motif: "mosaic",
+            faceWidth: 120,
+            faceHeight: 114,
+            earHeight: 36,
+            eyeStyle: "almond",
+            pattern: "mask",
+            accessory: "collar"
+          })
+        },
+        {
+          name: "Ming Garden Cat Beneath Blossoms",
+          trait: "Elegance and Ease",
+          collection: "Core Exhibition",
+          section: "Scholar's Garden Pavilion",
+          luckyWord: "Steal half a quiet day from the world. Even a brief pause to admire a flower is a deep kind of wisdom.",
+          image: createCatImage({
+            background: "#f5f0e5",
+            catColor: "#ead8bb",
+            accent: "#efb4c4",
+            deepAccent: "#a16f6b",
+            eyeColor: "#65554b",
+            motif: "flower",
+            faceWidth: 118,
+            faceHeight: 112,
+            earHeight: 38,
+            eyeStyle: "sleepy",
+            pattern: "blaze",
+            accessory: "ribbon"
+          })
+        },
+        {
+          name: "Hiroshige's Ukiyo-e White Cat",
+          trait: "Distance and Clarity",
+          collection: "Core Exhibition",
+          section: "Woodblock Window Gallery",
+          luckyWord: "Step outside the scene and watch from the sill. When you stop pushing, the answer reveals its own outline.",
+          image: createCatImage({
+            background: "#eef5fb",
+            catColor: "#f8fbff",
+            accent: "#a8c4e6",
+            deepAccent: "#5f7fa4",
+            eyeColor: "#4f6077",
+            motif: "window",
+            faceWidth: 110,
+            faceHeight: 120,
+            earHeight: 44,
+            eyeStyle: "sleepy",
+            pattern: "patch"
+          })
+        },
+        {
+          name: "The Cat in Goya's Shadow",
+          trait: "Concealment and Desire",
+          collection: "Core Exhibition",
+          section: "Nocturne Cabinet",
+          luckyWord: "Look directly at the longing you keep hidden. It is not shameful. It is one of the truest engines of life.",
+          image: createCatImage({
+            background: "#2b2630",
+            catColor: "#52505a",
+            accent: "#8a7a5f",
+            deepAccent: "#b08d47",
+            eyeColor: "#f4d68c",
+            motif: "shadow",
+            faceWidth: 116,
+            faceHeight: 120,
+            earHeight: 42,
+            eyeStyle: "bright",
+            pattern: "shadow"
+          })
+        },
+        {
+          name: "Maes's Mischief Cat",
+          trait: "Humor and Rule-Breaking",
+          collection: "Core Exhibition",
+          section: "Domestic Comedy Room",
+          luckyWord: "Life has become too solemn. Do one playful thing today and pull the stiff tablecloth from under routine.",
+          image: createCatImage({
+            background: "#fff4ec",
+            catColor: "#ffd7bf",
+            accent: "#ff8ea5",
+            deepAccent: "#d05f7d",
+            eyeColor: "#674e4a",
+            motif: "tablecloth",
+            faceWidth: 114,
+            faceHeight: 108,
+            earHeight: 40,
+            eyeStyle: "bright",
+            pattern: "nosePatch",
+            accessory: "bowtie"
+          })
+        },
+        {
+          name: "Renoir's Bourgeois House Cat",
+          trait: "Warmth and Repair",
+          collection: "Core Exhibition",
+          section: "Impressionist Salon",
+          luckyWord: "Slow your steps. What you need today may be no grand revelation, only warmth, softness, and a generous pause.",
+          image: createCatImage({
+            background: "#fdf1e6",
+            catColor: "#f2ccaa",
+            accent: "#f4b785",
+            deepAccent: "#bf7d4c",
+            eyeColor: "#6a5348",
+            motif: "home",
+            faceWidth: 120,
+            faceHeight: 116,
+            earHeight: 34,
+            eyeStyle: "round",
+            pattern: "blaze",
+            accessory: "bell"
+          })
+        },
+        {
+          name: "Bohemian Street Black Cat",
+          trait: "Defiance and Avant-Garde Spirit",
+          collection: "Core Exhibition",
+          section: "Midnight Arcade",
+          luckyWord: "There is no need to flatter the ordinary gaze. Night belongs to solitary, feverish, and free souls.",
+          image: createCatImage({
+            background: "#1f2330",
+            catColor: "#2f3442",
+            accent: "#7f8fff",
+            deepAccent: "#bcc7ff",
+            eyeColor: "#d8ddff",
+            motif: "moon",
+            faceWidth: 108,
+            faceHeight: 118,
+            earHeight: 52,
+            eyeStyle: "almond",
+            accessory: "star"
+          })
+        },
+        {
+          name: "Victorian Realist Kitten",
+          trait: "Focus and Purity",
+          collection: "Core Exhibition",
+          section: "Needlework Study Gallery",
+          luckyWord: "Follow one small pleasure with your whole attention, the way a kitten studies a thread. Pure joy still counts as meaning.",
+          image: createCatImage({
+            background: "#f8f5f0",
+            catColor: "#efe7dc",
+            accent: "#dfc4a0",
+            deepAccent: "#9a7754",
+            eyeColor: "#5a4b40",
+            motif: "yarn",
+            faceWidth: 122,
+            faceHeight: 118,
+            earHeight: 32,
+            eyeStyle: "round",
+            pattern: "nosePatch",
+            accessory: "lace"
+          })
+        },
+        {
+          name: "Leonardo's Sketch Cat",
+          trait: "Curiosity and Inquiry",
+          collection: "Expanded Archive",
+          section: "Renaissance Drafting Cabinet",
+          luckyWord: "Keep your appetite for detail alive. Even the smallest mark can open a door to a larger truth.",
+          image: createCatImage({
+            background: "#efe6d5",
+            catColor: "#dcc6a5",
+            accent: "#ceb38b",
+            deepAccent: "#8b6e4a",
+            eyeColor: "#5f4c33",
+            motif: "sketch",
+            faceWidth: 112,
+            faceHeight: 112,
+            earHeight: 36,
+            eyeStyle: "sleepy",
+            pattern: "sketch"
+          })
+        },
+        {
+          name: "Picasso's Untamed Cat",
+          trait: "Instinct and Freedom",
+          collection: "Expanded Archive",
+          section: "Cubist Experiment Hall",
+          luckyWord: "Tear away the polite disguise. Let the untamed part of your talent appear before rules can tame it again.",
+          image: createCatImage({
+            background: "#f7efe8",
+            catColor: "#d8c0ee",
+            accent: "#ffb35c",
+            deepAccent: "#3e4f9a",
+            eyeColor: "#343a55",
+            motif: "cube",
+            faceWidth: 118,
+            faceHeight: 110,
+            earHeight: 46,
+            eyeStyle: "almond",
+            pattern: "split",
+            accessory: "ribbon"
+          })
+        },
+        {
+          name: "Matisse and the Goldfish Cat",
+          trait: "Stillness and Meditation",
+          collection: "Expanded Archive",
+          section: "Color Meditation Room",
+          luckyWord: "Find a quiet corner and look at something simple for longer than usual. Space clears first, and inspiration follows.",
+          image: createCatImage({
+            background: "#e8f7f3",
+            catColor: "#c6e8dc",
+            accent: "#ff8d66",
+            deepAccent: "#2f8c82",
+            eyeColor: "#37645f",
+            motif: "fish",
+            faceWidth: 116,
+            faceHeight: 120,
+            earHeight: 34,
+            eyeStyle: "sleepy",
+            accessory: "collar"
+          })
+        },
+        {
+          name: "Qi Baishi's Lamp-Lit Mouser",
+          trait: "Wit and Street Wisdom",
+          collection: "Expanded Archive",
+          section: "Lantern Folklore Studio",
+          luckyWord: "Use humor to survive the clutter of life. The person who laughs with skill often keeps the deepest wisdom.",
+          image: createCatImage({
+            background: "#f6efe0",
+            catColor: "#d8c3a4",
+            accent: "#f4c56b",
+            deepAccent: "#845d33",
+            eyeColor: "#5c4a34",
+            motif: "lamp",
+            faceWidth: 110,
+            faceHeight: 114,
+            earHeight: 42,
+            eyeStyle: "bright",
+            pattern: "stripes"
+          })
+        },
+        {
+          name: "Dali's Surreal Leopard Cat",
+          trait: "Wonder and Exception",
+          collection: "Expanded Archive",
+          section: "Dream Mechanics Laboratory",
+          luckyWord: "Decline the ordinary. Today is built for extravagant ideas, improbable leaps, and the courage to test them.",
+          image: createCatImage({
+            background: "#f7ecff",
+            catColor: "#ffd28c",
+            accent: "#9dd9ff",
+            deepAccent: "#9a57cb",
+            eyeColor: "#5a4377",
+            motif: "surreal",
+            faceWidth: 124,
+            faceHeight: 108,
+            earHeight: 44,
+            eyeStyle: "almond",
+            pattern: "spots",
+            accessory: "halo"
+          })
+        },
+        {
+          name: "Frida's Black Cat",
+          trait: "Resilience and Return",
+          collection: "Expanded Archive",
+          section: "Resilience Portrait Chamber",
+          luckyWord: "What hurts you can still become your emblem. Wear the thorn, and let survival turn into style and witness.",
+          image: createCatImage({
+            background: "#f3eadf",
+            catColor: "#2f2c35",
+            accent: "#d44b65",
+            deepAccent: "#7d2d42",
+            eyeColor: "#f2ddb0",
+            motif: "thorn",
+            faceWidth: 108,
+            faceHeight: 122,
+            earHeight: 50,
+            eyeStyle: "bright",
+            accessory: "thorn"
+          })
+        },
+        {
+          name: "Warhol's Pop Cat",
+          trait: "Display and Identity",
+          collection: "Expanded Archive",
+          section: "Pop Print Room",
+          luckyWord: "You are allowed to amplify your own presence. Repeat your colors, circulate your spark, and let the room remember you.",
+          image: createCatImage({
+            background: "#fff1a9",
+            catColor: "#ff87b4",
+            accent: "#57d7ff",
+            deepAccent: "#7f4fff",
+            eyeColor: "#3e2958",
+            motif: "pop",
+            faceWidth: 118,
+            faceHeight: 110,
+            earHeight: 42,
+            eyeStyle: "bright",
+            pattern: "split",
+            accessory: "shades"
+          })
+        },
+        {
+          name: "Chagall's Flying Paris Cat",
+          trait: "Romance and Dream Logic",
+          collection: "Expanded Archive",
+          section: "Paris Reverie Gallery",
+          luckyWord: "Build yourself a dream and trust it for a while. Around love and ideals, gravity is rarely the final authority.",
+          image: createCatImage({
+            background: "#eaf0ff",
+            catColor: "#cdd6ff",
+            accent: "#f6a6c1",
+            deepAccent: "#6b74d8",
+            eyeColor: "#525a8b",
+            motif: "paris",
+            faceWidth: 120,
+            faceHeight: 112,
+            earHeight: 38,
+            eyeStyle: "sleepy",
+            accessory: "wings"
+          })
+        },
+        {
+          name: "Feng Zikai's White Cat",
+          trait: "Compassion and Poise",
+          collection: "Expanded Archive",
+          section: "Gentle Ink Pavilion",
+          luckyWord: "Treat living things with a softer hand today. Calm kindness can become the most effective medicine in a hurried world.",
+          image: createCatImage({
+            background: "#f8f7f2",
+            catColor: "#fbfcfe",
+            accent: "#b9c7b4",
+            deepAccent: "#7d8870",
+            eyeColor: "#677065",
+            motif: "ink",
+            faceWidth: 122,
+            faceHeight: 118,
+            earHeight: 34,
+            eyeStyle: "sleepy",
+            pattern: "blaze",
+            accessory: "ink"
+          })
+        },
+        {
+          name: "Schrodinger's Quantum Cat",
+          trait: "Possibility and Multiplicity",
+          collection: "Expanded Archive",
+          section: "Quantum Curiosity Lab",
+          luckyWord: "Before the box opens, every beautiful outcome is still alive. Act now and let possibility collapse into chosen happiness.",
+          image: createCatImage({
+            background: "#eff4ff",
+            catColor: "#d6defe",
+            accent: "#84a9ff",
+            deepAccent: "#556cd6",
+            eyeColor: "#435297",
+            motif: "atom",
+            faceWidth: 116,
+            faceHeight: 118,
+            earHeight: 46,
+            eyeStyle: "bright",
+            pattern: "mask",
+            accessory: "orbit"
+          })
+        }
+      ];
+
+      const openButton = document.getElementById("openButton");
+      const closeButton = document.getElementById("closeButton");
+      const contractModal = document.getElementById("contractModal");
+      const catImage = document.getElementById("catImage");
+      const catCode = document.getElementById("catCode");
+      const catSeries = document.getElementById("catSeries");
+      const catName = document.getElementById("catName");
+      const catTrait = document.getElementById("catTrait");
+      const catSection = document.getElementById("catSection");
+      const catFortune = document.getElementById("catFortune");
+
+      function pickRandomCat() {
+        const randomIndex = Math.floor(Math.random() * catFortunes.length);
+        return {
+          cat: catFortunes[randomIndex],
+          index: randomIndex
+        };
+      }
+
+      function openContract() {
+        const { cat, index } = pickRandomCat();
+        catImage.src = cat.image;
+        catImage.alt = cat.name;
+        catCode.textContent = `Accession No. MC-${String(index + 1).padStart(3, "0")}`;
+        catSeries.textContent = cat.collection;
+        catName.textContent = cat.name;
+        catTrait.textContent = cat.trait;
+        catSection.textContent = cat.section;
+        catFortune.textContent = cat.luckyWord;
+        contractModal.classList.add("show");
+        contractModal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeContract() {
+        contractModal.classList.remove("show");
+        contractModal.setAttribute("aria-hidden", "true");
+      }
+
+      openButton.addEventListener("click", openContract);
+      closeButton.addEventListener("click", closeContract);
+      contractModal.addEventListener("click", (event) => {
+        if (event.target === contractModal) {
+          closeContract();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeContract();
+        }
+      });
+    </script>
+  </body>
+</html>
